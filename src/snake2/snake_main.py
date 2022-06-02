@@ -28,7 +28,6 @@ def check_collision(x1, y1, x2, y2):
             return True         # returns True if there is a collision
     return False        # returns False if there is no collision
 
-
 class Sprite:
     x = 100
     y = 100
@@ -77,6 +76,10 @@ def run():
             print("collided with apple")
             apple.move_random()
             pygame.draw.circle(screen, red, (apple.x, apple.y), size)
+
+        # snake goes out of bounds
+        if Sprite.x < 0 or Sprite.x > w or Sprite.y < 0 or Sprite.y:
+            print("D")
          
         
         # print(Sprite.x)
