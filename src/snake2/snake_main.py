@@ -62,9 +62,10 @@ def run():
 
     while game_in_progress:        
         screen.fill(green) 
-        pygame.draw.rect(screen, othergreen, (Sprite.x, Sprite.y, Sprite.width, Sprite.height))
-        pygame.draw.circle(screen, red, (apple.x, apple.y), size)
-
+        controlled = pygame.draw.rect(screen, othergreen, (Sprite.x, Sprite.y, Sprite.width, Sprite.height))
+        food = pygame.draw.circle(screen, red, (apple.x, apple.y), size)
+        if controlled.colliderect(food):
+            print("COLLISION")
         # myfont = pygame.font.SysFont("monospace", 15)
         # label = myfont.render(score, 1, (255, 255, 0))
 
@@ -73,12 +74,13 @@ def run():
         for event in pygame.event.get(): 
             speed = 5
         
-        if check_collision(Sprite.x, Sprite.y, apple.x, apple.y):
+        if controlled.colliderect(food):
             print("collided with apple")
             apple.move_random()
             pygame.draw.circle(screen, red, (apple.x, apple.y), size)
          
-        
+        if Sprite.x < 0 or Sprite.x > w or Sprite.y < 0 or Sprite.y > h:
+            break
         # print(Sprite.x)
         # print(Sprite.y)
 
