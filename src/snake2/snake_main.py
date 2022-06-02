@@ -1,4 +1,6 @@
 import pygame
+import random
+
 #def run():
  #   global w, h
     
@@ -48,11 +50,35 @@ import pygame
 #if __name__ == '__main__': #if the user runs "snake_main.py" from terminal
 #    run()
 
+size = 10    # size of the apple (same size as grid spot)
+
+class Apple:
+    def __init__(self, screen):                                   # constructor for the apple object
+        self.image = pygame.image.load("apple.png").convert()     # loads the apple image
+        self.screen = screen                                      # screen that the apple will be drawn on
+        self.x = size*3                                           # x coordinate of the apple
+        self.y = size*3                                           # y coordinate of the apple
+
+    def draw(self):                                               # function to draw the apple
+        self.screen.blit(self.image, (self.x, self.y))            # blit is used to draw an image on top of another (in this case apple on top of the grid)
+        pygame.display.flip()                                     # updates the contents drawn to the screen
+
+    def move_random(self):                                        # function to move apple to a random spot
+        self.x = random.randint(0, 50)*size                       # random x coordinate
+        self.y = random.randint(0, 50)*size                       # random y coordinate
+
 class Sprite:
     x = 100
     y = 100
     #topedge = 100
     #bottomedge = 100
+
+# FUNCTION FOR COLLISION W/ APPLE
+def check_collision(self, x1, y1, x2, y2):
+    if x1 >= x2 and x1 < x2 + size:
+        if y1 >= y2 and y1 < y2 + size:
+            return True         # returns True if there is a collision
+    return False        # returns False if there is no collision
 
 def run(): 
     global w, h 
@@ -72,6 +98,10 @@ def run():
     square = pygame.Surface((20, 20))
     square.fill((255, 0, 0))
     clock = pygame.time.Clock()
+
+    # initialize apple into the game
+    apple = Apple(screen)
+    apple.draw()
 
     while game_in_progress:        
 
