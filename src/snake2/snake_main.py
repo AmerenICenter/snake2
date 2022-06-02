@@ -4,6 +4,57 @@ from turtle import width
 
 
 size = 10    # size of the apple (same size as grid spot)
+def start_screen(screen): 
+    # initializing the constructor      
+    print("start_screen()")     
+    pygame.init()       
+    not_playing_yet = True      
+    light_green = (144, 238, 144)   
+    white = (255, 255, 255)     
+    black = (0, 0, 0)   
+    screen.fill(light_green)    
+
+
+    font = pygame.font.SysFont("monospace", 30)     
+    label = font.render("Welcome to Our Game!", 1, white)   
+    label1 = font.render("Click the mouse to continue", 2, white)   
+    screen.blit(label, (250, 250))  
+    screen.blit(label1, (200, 400))     
+    pygame.display.update()     
+
+    while not_playing_yet:  
+        for event in pygame.event.get():   
+            if event.type == pygame.MOUSEBUTTONDOWN:  
+                not_playing_yet = False  
+    pygame.display.update()  
+
+ 
+ 
+
+def end_screen(screen, score):  
+
+    black = (0, 0, 0)   
+    red = (255, 0, 0)   
+    pygame.init()   
+    screen.fill(black)      
+    font = pygame.font.SysFont("monospace", 30)     
+    label = font.render("You Lost!", 1, red)    
+    label1 = font.render("Click the mouse to continue", 1, red)     
+    show_score = font.render("Score: " + str(score), 1, red)    
+    screen.blit(label, (325, 250))      
+    screen.blit(label1, (180, 300))     
+    screen.blit(show_score, (325, 350))     
+    font = pygame.font.Font('freesansbold.ttf', 32)     
+    pygame.display.update()     
+
+
+    not_playing_yet = True  
+    while not_playing_yet:      
+        for event in pygame.event.get():      
+            if event.type == pygame.MOUSEBUTTONDOWN:    
+                run()   
+
+    pygame.display.update() 
 
 class Apple:
     def __init__(self, screen):                                   # constructor for the apple object
@@ -19,40 +70,7 @@ class Apple:
     def move_random(self):                                        # function to move apple to a random spot
         self.x = random.randint(50, 750)
         self.y = random.randint(50, 750)
-        # x = random.randint(0, 80) * size
 
-        # if x > 800 or x < 0:
-        #     if x > 800:
-        #         x = 750
-        #         self.x = x
-        #     else: # x < 0
-        #         x = 10
-        #         self.x = x
-
-        # else: # x <= 800 and x >= 0
-        #     self.x = x
-
-
-        # y = random.randint(0, 80)*size
-        # if y > 800 or y < 0:
-        #     if y > 800:
-        #         y = 750
-        #         self.y = y
-        #     else: # y < 0
-        #         y = 10
-        #         self.y = y
-
-        # else: # y <= 800 and y >= 0
-        #     self.y = y
-
-
-
-# FUNCTION FOR COLLISION W/ APPLE
-def check_collision(x1, y1, x2, y2):
-    if x1 >= x2 and x1 < x2 + size:
-        if y1 >= y2 and y1 < y2 + size:
-            return True         # returns True if there is a collision
-    return False        # returns False if there is no collision
 
 
 class Sprite:
@@ -74,6 +92,8 @@ def run():
     w = 800
     h = 800
     screen = pygame.display.set_mode((w, h)) 
+    start_screen(screen)
+    pygame.display.update() 
     screen.fill(green) 
     pygame.display.update() 
     game_in_progress = 1 
@@ -82,7 +102,6 @@ def run():
     square.fill((255, 0, 0))
     clock = pygame.time.Clock()
     score = 0
-
     apple = Apple(screen)
     apple.draw()
 
@@ -113,8 +132,8 @@ def run():
         score_img = font.render(score_txt, True, (0, 0, 255))
         screen.blit(score_img, (2, 2))
    
-        for event in pygame.event.get(): 
-            speed = 5
+        
+
         
         if controlled.colliderect(food):
             print("collided with apple")
@@ -123,85 +142,81 @@ def run():
             snake_size += 1
             score += 1
 
-        
          
         if Sprite.x < 0 or Sprite.x > w or Sprite.y < 0 or Sprite.y > h:
             break
 
-        if event.type == pygame.KEYDOWN: 
-            if event.key == pygame.K_LEFT or event.key == ord('a'): 
-                if direction != "RIGHT":
-                    # break
-                    Sprite.x -= speed
-                    direction = "LEFT"
-                    print("D")
-                else:
-                    Sprite.x += speed
-                
-                           
+        for event in pygame.event.get(): 
+            if event.type == pygame.KEYDOWN: 
+                if event.key == pygame.K_LEFT or event.key == ord('a'): 
+                    if direction != "RIGHT":
+                        # break
+                        #Sprite.x -= speed
+                        direction = "LEFT"
+                        print("D")
 
-            if event.key == pygame.K_RIGHT or event.key == ord('d'):
-                if direction != "LEFT":
-                    # break
-                    Sprite.x += speed 
-                    direction = "RIGHT"
-                else:
-                    Sprite.x -= speed
+                if event.key == pygame.K_RIGHT or event.key == ord('d'):
+                    if direction != "LEFT":
+                        # break
+                        #Sprite.x += speed 
+                        direction = "RIGHT"
+                    
 
-            if event.key == pygame.K_UP or event.key == ord('w'): 
-                if direction != "DOWN":
-                    Sprite.y -= speed
-                    direction = "UP"
-                else:
-                    Sprite.y += speed
+                if event.key == pygame.K_UP or event.key == ord('w'): 
+                    if direction != "DOWN":
+                        #Sprite.y -= speed
+                        direction = "UP"
+                    
 
 
-            if event.key == pygame.K_DOWN or event.key == ord('s'):
-                if direction != "UP":
-                    # break 
-                    Sprite.y += speed
-                    direction = "DOWN"
-                else:
-                    Sprite.y -= speed
+                if event.key == pygame.K_DOWN or event.key == ord('s'):
+                    if direction != "UP":
+                        # break 
+                        #Sprite.y += speed
+                        direction = "DOWN"
+                   
 
-        if event.type == pygame.KEYUP:
-            if event.key == pygame.K_LEFT or event.key == ord('a'): 
-                if direction != "RIGHT":
-                    # break
-                    Sprite.x -= speed
-                    direction = "LEFT"
-                    print("D")
-                else:
-                    Sprite.x += speed               
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_LEFT or event.key == ord('a'): 
+                    if direction != "RIGHT":
+                        # break
+                        #Sprite.x -= speed
+                        direction = "LEFT"
+                        print("D")             
 
-            if event.key == pygame.K_RIGHT or event.key == ord('d'):
-                if direction != "LEFT":
-                    # break
-                    Sprite.x += speed 
-                    direction = "RIGHT"
-                else:
-                    print("CAT")
-                    Sprite.x -= speed
-
-            if event.key == pygame.K_UP or event.key == ord('w'): 
-                if direction != "DOWN":
-                    Sprite.y -= speed
-                    direction = "UP"
-                else:
-                    Sprite.y += speed
-
-            if event.key == pygame.K_DOWN or event.key == ord('s'): 
-                if direction != "UP":
-                    # break 
-                    Sprite.y += speed
-                    direction = "DOWN"
-                else:
-                    Sprite.y -= speed
-   
+                if event.key == pygame.K_RIGHT or event.key == ord('d'):
+                    if direction != "LEFT":
+                        # break
+                       # Sprite.x += speed 
+                        direction = "RIGHT"
         
+
+                if event.key == pygame.K_UP or event.key == ord('w'): 
+                    if direction != "DOWN":
+                        #Sprite.y -= speed
+                        direction = "UP"
+            
+
+                if event.key == pygame.K_DOWN or event.key == ord('s'): 
+                    if direction != "UP":
+                        # break 
+                        #Sprite.y += speed
+                        direction = "DOWN"
+
+        if direction =="UP":
+            Sprite.y -= speed
+        if direction == "DOWN":
+            Sprite.y += speed
+        if direction == "LEFT":
+            Sprite.x -= speed
+        if direction == "RIGHT":
+            Sprite.x += speed
+
+
+
         pygame.display.update()  # move?
         clock.tick(60)   
-
+    end_screen(screen,score)
     pygame.display.quit() 
 
     return 
