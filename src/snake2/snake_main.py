@@ -9,42 +9,41 @@ class Apple:
     def __init__(self, screen):                                   # constructor for the apple object
         self.image = pygame.image.load("../../apple.png").convert()     # loads the apple image
         self.screen = screen                                      # screen that the apple will be drawn on
-        self.x = size*3                                           # x coordinate of the apple
-        self.y = size*3                                           # y coordinate of the apple
+        self.x = size*20                                           # x coordinate of the apple
+        self.y = size*20                                           # y coordinate of the apple
 
     def draw(self):                                               # function to draw the apple
         self.screen.blit(self.image, (self.x, self.y))            # blit is used to draw an image on top of another (in this case apple on top of the grid)
         pygame.display.flip()                                     # updates the contents drawn to the screen
 
     def move_random(self):                                        # function to move apple to a random spot
-        
-        #self.x = random.randint(0, 60)*size                       # random x coordinate
-        #self.y = random.randint(0, 60)*size                       # random y coordinate
-        x = random.randint(0, 80)*size
-        if x > 800 or x < 0:
-            if x > 800:
-                x = 750
-                self.x = x
-            else: # x < 0
-                x = 10
-                self.x = x
+        self.x = random.randint(200, 600)
+        self.y = random.randint(200, 600)
+        # x = random.randint(0, 80) * size
 
-        else: # x <= 800 and x >= 0
-            self.x = x
+        # if x > 800 or x < 0:
+        #     if x > 800:
+        #         x = 750
+        #         self.x = x
+        #     else: # x < 0
+        #         x = 10
+        #         self.x = x
+
+        # else: # x <= 800 and x >= 0
+        #     self.x = x
 
 
-        y = random.randint(0, 80)*size
-        if y > 800 or y < 0:
-            if y > 800:
-                y = 750
-                self.y = y
-            else: # y < 0
-                y = 10
-                self.y = y
+        # y = random.randint(0, 80)*size
+        # if y > 800 or y < 0:
+        #     if y > 800:
+        #         y = 750
+        #         self.y = y
+        #     else: # y < 0
+        #         y = 10
+        #         self.y = y
 
-        else: # y <= 800 and y >= 0
-            self.y = y
-
+        # else: # y <= 800 and y >= 0
+        #     self.y = y
 
 
 
@@ -87,17 +86,32 @@ def run():
     apple = Apple(screen)
     apple.draw()
 
+    entire_snake = []
+    snake_size = 1
+
+    def draw_snake(size, entire_snake):
+        for pos in entire_snake:
+            pygame.draw.rect(screen, othergreen, (pos[0], pos[1], size, size))
+
     while game_in_progress:        
-        screen.fill(green) 
+        screen.fill(green)
+        entire_snake.append([Sprite.x, Sprite.y])
+        print(entire_snake)
+        
+        if len(entire_snake) > snake_size:
+            entire_snake = entire_snake[1:]
+
+        draw_snake(20, entire_snake)
+
         controlled = pygame.draw.rect(screen, othergreen, (Sprite.x, Sprite.y, Sprite.width, Sprite.height))
         food = pygame.draw.circle(screen, red, (apple.x, apple.y), size)
-        if controlled.colliderect(food):
-            print("COLLISION")
-        # myfont = pygame.font.SysFont("monospace", 15)
-        # label = myfont.render(score, 1, (255, 255, 0))
 
-        # screen.blit(label, (100, 100))
+        font = pygame.font.SysFont(None, 30)
+        score_txt = 'SCORE: ' + str(score)
 
+        score_img = font.render(score_txt, True, (0, 0, 255))
+        screen.blit(score_img, (2, 2))
+   
         for event in pygame.event.get(): 
             speed = 5
         
@@ -105,15 +119,18 @@ def run():
             print("collided with apple")
             apple.move_random()
             pygame.draw.circle(screen, red, (apple.x, apple.y), size)
+            snake_size += 1
+            score += 1
+
         
+         
         if Sprite.x < 0 or Sprite.x > w or Sprite.y < 0 or Sprite.y > h:
             break
-        # print(Sprite.x)
-        # print(Sprite.y)
 
         if event.type == pygame.KEYDOWN: 
             if event.key == pygame.K_LEFT or event.key == ord('a'): 
-                Sprite.x -= speed                    
+                Sprite.x -= speed
+                           
 
             if event.key == pygame.K_RIGHT or event.key == ord('d'):
                 Sprite.x += speed 
@@ -139,7 +156,7 @@ def run():
                 Sprite.y += speed
    
         
-        pygame.display.update() 
+        pygame.display.update()  # move?
         clock.tick(60)   
 
     pygame.display.quit() 
