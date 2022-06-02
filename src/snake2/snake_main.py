@@ -2,6 +2,7 @@ import pygame
 import random
 from turtle import width
 
+
 size = 10    # size of the apple (same size as grid spot)
 
 class Apple:
@@ -21,7 +22,7 @@ class Apple:
 
 
 # FUNCTION FOR COLLISION W/ APPLE
-def check_collision(self, x1, y1, x2, y2):
+def check_collision(x1, y1, x2, y2):
     if x1 >= x2 and x1 < x2 + size:
         if y1 >= y2 and y1 < y2 + size:
             return True         # returns True if there is a collision
@@ -39,6 +40,7 @@ def run():
 
     pygame.init() 
     pygame.display.init() 
+    pygame.display.set_caption('snake')
     print(pygame.display.get_init()) 
     green = (34,139,34) 
     red = (220, 20, 60)
@@ -49,48 +51,65 @@ def run():
     screen.fill(green) 
     pygame.display.update() 
     game_in_progress = 1 
-    speed = 0
+    speed = 5
     square = pygame.Surface((20, 20))
     square.fill((255, 0, 0))
     clock = pygame.time.Clock()
+    score = 0
 
     apple = Apple(screen)
     apple.draw()
+
+    # myfont = pygame.font.SysFont("monospace", 15)
+
+    # render text
+    # label = myfont.render("Some text!", 1, (255,255,0))
 
     while game_in_progress:        
         screen.fill(green) 
         pygame.draw.rect(screen, othergreen, (Sprite.x, Sprite.y, Sprite.width, Sprite.height))
         pygame.draw.circle(screen, red, (apple.x, apple.y), size)
+        # screen.blit(label, (100, 100))
 
         for event in pygame.event.get(): 
-            speed = 1 
+            speed = 5
+        
+        if check_collision(Sprite.x, Sprite.y, apple.x, apple.y):
+            print("collided with apple")
+            # apple.x = 500
+            # apple.y = 50
+            apple.move_random()
+            pygame.draw.circle(screen, red, (apple.x, apple.y), size)
+        
+        # print(Sprite.x)
+        # print(Sprite.y)
 
         if event.type == pygame.KEYDOWN: 
             if event.key == pygame.K_LEFT or event.key == ord('a'): 
-                Sprite.x -= 10                    
+                Sprite.x -= speed                    
 
             if event.key == pygame.K_RIGHT or event.key == ord('d'):
-                Sprite.x += 10 
+                Sprite.x += speed 
 
             if event.key == pygame.K_UP or event.key == ord('w'): 
-                Sprite.y -= 10
+                Sprite.y -= speed
 
 
             if event.key == pygame.K_DOWN or event.key == ord('s'): 
-                Sprite.y += 10
+                Sprite.y += speed
 
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_LEFT or event.key == ord('a'): 
-                Sprite.x -= 10                    
+                Sprite.x -= speed                    
 
             if event.key == pygame.K_RIGHT or event.key == ord('d'):
-                Sprite.x += 10 
+                Sprite.x += speed 
 
             if event.key == pygame.K_UP or event.key == ord('w'): 
-                Sprite.y -= 10
+                Sprite.y -= speed
 
             if event.key == pygame.K_DOWN or event.key == ord('s'): 
-                Sprite.y += 10
+                Sprite.y += speed
    
         
         pygame.display.update() 
