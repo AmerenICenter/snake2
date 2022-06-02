@@ -17,8 +17,8 @@ class Apple:
         pygame.display.flip()                                     # updates the contents drawn to the screen
 
     def move_random(self):                                        # function to move apple to a random spot
-        self.x = random.randint(200, 600)
-        self.y = random.randint(200, 600)
+        self.x = random.randint(50, 750)
+        self.y = random.randint(50, 750)
         # x = random.randint(0, 80) * size
 
         # if x > 800 or x < 0:
@@ -88,6 +88,7 @@ def run():
 
     entire_snake = []
     snake_size = 1
+    direction = ""
 
     def draw_snake(size, entire_snake):
         for pos in entire_snake:
@@ -96,7 +97,7 @@ def run():
     while game_in_progress:        
         screen.fill(green)
         entire_snake.append([Sprite.x, Sprite.y])
-        print(entire_snake)
+        # print(entire_snake)
         
         if len(entire_snake) > snake_size:
             entire_snake = entire_snake[1:]
@@ -129,31 +130,73 @@ def run():
 
         if event.type == pygame.KEYDOWN: 
             if event.key == pygame.K_LEFT or event.key == ord('a'): 
-                Sprite.x -= speed
+                if direction != "RIGHT":
+                    # break
+                    Sprite.x -= speed
+                    direction = "LEFT"
+                    print("D")
+                else:
+                    Sprite.x += speed
+                
                            
 
             if event.key == pygame.K_RIGHT or event.key == ord('d'):
-                Sprite.x += speed 
+                if direction != "LEFT":
+                    # break
+                    Sprite.x += speed 
+                    direction = "RIGHT"
+                else:
+                    Sprite.x -= speed
 
             if event.key == pygame.K_UP or event.key == ord('w'): 
-                Sprite.y -= speed
+                if direction != "DOWN":
+                    Sprite.y -= speed
+                    direction = "UP"
+                else:
+                    Sprite.y += speed
 
 
-            if event.key == pygame.K_DOWN or event.key == ord('s'): 
-                Sprite.y += speed
+            if event.key == pygame.K_DOWN or event.key == ord('s'):
+                if direction != "UP":
+                    # break 
+                    Sprite.y += speed
+                    direction = "DOWN"
+                else:
+                    Sprite.y -= speed
 
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_LEFT or event.key == ord('a'): 
-                Sprite.x -= speed                    
+                if direction != "RIGHT":
+                    # break
+                    Sprite.x -= speed
+                    direction = "LEFT"
+                    print("D")
+                else:
+                    Sprite.x += speed               
 
             if event.key == pygame.K_RIGHT or event.key == ord('d'):
-                Sprite.x += speed 
+                if direction != "LEFT":
+                    # break
+                    Sprite.x += speed 
+                    direction = "RIGHT"
+                else:
+                    print("CAT")
+                    Sprite.x -= speed
 
             if event.key == pygame.K_UP or event.key == ord('w'): 
-                Sprite.y -= speed
+                if direction != "DOWN":
+                    Sprite.y -= speed
+                    direction = "UP"
+                else:
+                    Sprite.y += speed
 
             if event.key == pygame.K_DOWN or event.key == ord('s'): 
-                Sprite.y += speed
+                if direction != "UP":
+                    # break 
+                    Sprite.y += speed
+                    direction = "DOWN"
+                else:
+                    Sprite.y -= speed
    
         
         pygame.display.update()  # move?
