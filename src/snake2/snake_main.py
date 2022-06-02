@@ -17,8 +17,35 @@ class Apple:
         pygame.display.flip()                                     # updates the contents drawn to the screen
 
     def move_random(self):                                        # function to move apple to a random spot
-        self.x = random.randint(0, 50)*size                       # random x coordinate
-        self.y = random.randint(0, 50)*size                       # random y coordinate
+        
+        #self.x = random.randint(0, 60)*size                       # random x coordinate
+        #self.y = random.randint(0, 60)*size                       # random y coordinate
+        x = random.randint(0, 80)*size
+        if x > 800 or x < 0:
+            if x > 800:
+                x = 750
+                self.x = x
+            else: # x < 0
+                x = 10
+                self.x = x
+
+        else: # x <= 800 and x >= 0
+            self.x = x
+
+
+        y = random.randint(0, 80)*size
+        if y > 800 or y < 0:
+            if y > 800:
+                y = 750
+                self.y = y
+            else: # y < 0
+                y = 10
+                self.y = y
+
+        else: # y <= 800 and y >= 0
+            self.y = y
+
+
 
 
 # FUNCTION FOR COLLISION W/ APPLE
@@ -78,7 +105,7 @@ def run():
             print("collided with apple")
             apple.move_random()
             pygame.draw.circle(screen, red, (apple.x, apple.y), size)
-         
+        
         if Sprite.x < 0 or Sprite.x > w or Sprite.y < 0 or Sprite.y > h:
             break
         # print(Sprite.x)
